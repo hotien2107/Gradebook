@@ -33,22 +33,31 @@ export default function Home({ classesData }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   //fetch data teaching from api
   const url = process.env.ROOT_URL
     ? process.env.ROOT_URL
     : "http://localhost:3000";
   const response = await fetch(`${url}/api/AllClasses`);
   const data = await response.json();
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
   const dataFormated = data.map((item) => ({
     id: item._id.toString(),
     title: item.name,
     image: item.image,
     description: item.description,
   }));
+
   return {
     props: {
       classesData: dataFormated,
-    }
+    },
+    revalidate: 1,
   };
 }
