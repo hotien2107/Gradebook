@@ -50,7 +50,7 @@ export default function Home({ TeachingData, EnrolledData }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   //fetch data teaching from api
   const url = process.env.ROOT_URL
     ? process.env.ROOT_URL
@@ -87,7 +87,6 @@ export async function getStaticProps() {
     props: {
       TeachingData: dataTeachingSplit,
       EnrolledData: dataEnrolledSplit,
-    },
-    revalidate: 1,
+    }
   };
 }

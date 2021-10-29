@@ -29,7 +29,7 @@ const Teaching = ({ classesData }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   //fetch data from api
   const url = process.env.ROOT_URL
     ? process.env.ROOT_URL
@@ -48,8 +48,7 @@ export async function getStaticProps() {
   return {
     props: {
       classesData: dataFormated,
-    },
-    revalidate: 1,
+    }
   };
 }
 
