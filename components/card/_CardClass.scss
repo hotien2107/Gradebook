@@ -1,0 +1,9 @@
+.card {
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+  
+    &:hover {
+      transform: translateY(-3px) !important;
+      box-shadow: 0 2px 1rem #999 !important;
+    }
+  }

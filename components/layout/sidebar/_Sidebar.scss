@@ -1,0 +1,57 @@
+.menu {
+  padding: 0.9rem !important;
+  color: #555 !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+
+  &__home {
+    width: 5rem !important;
+    height: 5rem !important;
+    font-size: 2rem !important;
+    padding: 1rem 1rem !important;
+    border-radius: 5px !important;
+    color: #303f9f !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+
+    &:hover {
+      background-color: #303f9f !important;
+      color: #fff !important;
+    }
+  }
+
+  &__subtitle {
+    font-size: 0.9rem !important;
+    color: #777 !important;
+    user-select: none !important;
+  }
+
+  &__item {
+    border-radius: 5px !important;
+    transition: all 0.3s !important;
+    &:hover {
+      background-color: #303f9f !important;
+      color: #fff !important;
+    }
+  }
+  &__item:hover &__icon {
+    background-color: #fff !important;
+    color: #303f9f !important;
+  }
+
+  &__icon {
+    border-radius: 5px !important;
+    background-color: #eee !important;
+
+    &--1 {
+      width: 3rem !important;
+      height: 2.5rem !important;
+      padding: 0.5rem !important;
+    }
+
+    &--2 {
+      font-size: 1.5rem !important;
+      padding: 0.1rem 1rem !important;
+    }
+  }
+}

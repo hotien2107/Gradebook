@@ -1,0 +1,17 @@
+.group-title {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.title {
+  font-weight: 600 !important;
+  color: #555 !important;
+  transition: all 0.3s !important;
+  cursor: pointer !important;
+
+  &:hover {
+    transform: skew(-7deg) scale(1.2) !important;
+    color: $color-primary !important;
+  }
+}
