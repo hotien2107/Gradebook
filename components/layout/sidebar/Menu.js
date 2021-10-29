@@ -37,14 +37,14 @@ const Menu = ({ onClose }) => {
           <ListItemText primary="All Classes Teaching" />
         </ListItem>
 
-        {["Inbox", "Starred"].map((text, index) => (
+        {/* {["Inbox", "Starred"].map((text, index) => (
           <ListItem button key={text} className="menu__item">
             <ListItemIcon>
               <span className="menu__icon menu__icon--2">{text[0]}</span>
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
-        ))}
+        ))} */}
       </List>
       <Divider />
       <p className="menu__subtitle">Enrolled</p>
@@ -61,14 +61,14 @@ const Menu = ({ onClose }) => {
           <ListItemText primary="All Classes Enrolled" />
         </ListItem>
 
-        {["Inbox", "Starred"].map((text, index) => (
+        {/* {["Inbox", "Starred"].map((text, index) => (
           <ListItem button key={text} className="menu__item">
             <ListItemIcon>
               <span className="menu__icon menu__icon--2">{text[0]}</span>
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
-        ))}
+        ))} */}
       </List>
 
       <Divider />

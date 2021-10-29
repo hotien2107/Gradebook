@@ -7,7 +7,7 @@ import Classes from "../components/class/Classes";
 import JoinClass from "../components/class/JoinClass";
 import NewClass from "../components/class/NewClass";
 
-export default function Home({ TeachingData, EnrolledData }) {
+export default function Home({ classesData }) {
   const [openAddClass, setOpenAddClass] = useState(false);
   const [openJoinClass, setOpenJoinClass] = useState(false);
 
@@ -20,7 +20,7 @@ export default function Home({ TeachingData, EnrolledData }) {
 
       <div className="group-title">
         <Typography variant="h5" mt={2} mb={2} className="title">
-          <Link href="/classes/Teaching">Teaching</Link>
+          All Classes
         </Typography>
         <ControlPoint
           className="icon icon--add"
@@ -28,24 +28,7 @@ export default function Home({ TeachingData, EnrolledData }) {
         />
       </div>
       {openAddClass ? <NewClass onClose={() => setOpenAddClass(false)} /> : ""}
-      <Classes data={TeachingData} />
-      <Divider />
-
-      <div className="group-title">
-        <Typography variant="h5" mt={2} mb={2} className="title">
-          <Link href="/classes/Enrolled">Enrolled</Link>
-        </Typography>
-        <ControlPoint
-          className="icon icon--add"
-          onClick={() => setOpenJoinClass(true)}
-        />
-      </div>
-      {openJoinClass ? (
-        <JoinClass onClose={() => setOpenJoinClass(false)} />
-      ) : (
-        ""
-      )}
-      <Classes data={EnrolledData} />
+      <Classes data={classesData} />
     </Fragment>
   );
 }
@@ -55,38 +38,17 @@ export async function getServerSideProps() {
   const url = process.env.ROOT_URL
     ? process.env.ROOT_URL
     : "http://localhost:3000";
-  const response_teaching = await fetch(`${url}/api/ClassesTeaching`);
-  const data_teaching = await response_teaching.json();
-  const dataTeachingFormated = data_teaching.map((item) => ({
+  const response = await fetch(`${url}/api/AllClasses`);
+  const data = await response.json();
+  const dataFormated = data.map((item) => ({
     id: item._id.toString(),
     title: item.name,
     image: item.image,
     description: item.description,
   }));
-  let dataTeachingSplit = [];
-  if (dataTeachingFormated.length > 4) {
-    dataTeachingSplit = dataTeachingFormated.slice(0, 4);
-  } else {
-    dataTeachingSplit = [...dataTeachingFormated];
-  }
-  const response_enrolled = await fetch(`${url}/api/ClassesEnrolled`);
-  const data_enrolled = await response_enrolled.json();
-  const dataEnrolledFormated = data_enrolled.map((item) => ({
-    id: item._id.toString(),
-    title: item.name,
-    image: item.image,
-    description: item.description,
-  }));
-  let dataEnrolledSplit = [];
-  if (dataEnrolledFormated.length > 4) {
-    dataEnrolledSplit = dataEnrolledFormated.slice(0, 4);
-  } else {
-    dataEnrolledSplit = [...dataEnrolledFormated];
-  }
   return {
     props: {
-      TeachingData: dataTeachingSplit,
-      EnrolledData: dataEnrolledSplit,
+      classesData: dataFormated,
     }
   };
 }
