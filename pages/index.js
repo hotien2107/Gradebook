@@ -1,13 +1,16 @@
+import { Fragment, useState } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { MongoClient } from "mongodb";
 import { ControlPoint } from "@mui/icons-material";
 import { Divider, Typography } from "@mui/material";
-import { MongoClient } from "mongodb";
-import Head from "next/head";
-import { Fragment, useState } from "react";
+
 import Classes from "../components/class/Classes";
 import NewClass from "../components/class/NewClass";
 import JoinClass from "../components/class/JoinClass";
 
 export default function Home({ classesTeaching, classesEnrolled }) {
+  const router = useRouter();
   const [openAddClass, setOpenAddClass] = useState(false);
   const [openJoinClass, setOpenJoinClass] = useState(false);
 
@@ -22,7 +25,7 @@ export default function Home({ classesTeaching, classesEnrolled }) {
       </Head>
 
       <div className="group-title">
-        <Typography variant="h5" mt={2} mb={2} className="title">
+        <Typography variant="h5" mt={2} mb={2} className="title" onClick={() => router.push('/classes/Teaching')}>
           Teaching
         </Typography>
         <ControlPoint
@@ -36,7 +39,7 @@ export default function Home({ classesTeaching, classesEnrolled }) {
       <Divider />
 
       <div className="group-title">
-        <Typography variant="h5" mt={2} mb={2} className="title">
+        <Typography variant="h5" mt={2} mb={2} className="title" onClick={() => router.push('/classes/Enrolled')}>
           Enrolled
         </Typography>
         <ControlPoint
