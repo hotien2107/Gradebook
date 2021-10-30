@@ -1,7 +1,8 @@
+import React, { Fragment, useState } from "react";
+import Head from "next/head";
+import { MongoClient } from "mongodb";
 import { ControlPoint } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import React, { Fragment, useState } from "react";
-import { MongoClient } from "mongodb";
 
 import Classes from "../../components/class/Classes";
 import JoinClass from "../../components/class/JoinClass";
@@ -11,6 +12,13 @@ const Enrolled = ({ classesData }) => {
 
   return (
     <Fragment>
+      <Head>
+        <title>Gradebook-Enrolled</title>
+        <meta
+          name="description"
+          content="Website to support learning and teaching"
+        />
+      </Head>
       <div className="group-title">
         <Typography variant="h5" mt={2} mb={2} className="title">
           Enrolled
