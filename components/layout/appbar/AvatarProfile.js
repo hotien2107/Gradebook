@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Avatar, Menu, MenuItem } from "@mui/material";
+import { Avatar, Divider, Menu, MenuItem } from "@mui/material";
 
 import Avt from "../../../public/images/avatar-1.jpg";
 
@@ -40,8 +40,16 @@ export default function AvatarProfile() {
           "aria-labelledby": "basic-avatar",
         }}
       >
-        <MenuItem onClick={() => router.push('/classes/Teaching')}>Classes teaching</MenuItem>
-        <MenuItem onClick={() => router.push('/classes/Enrolled')}>Classes enrolled</MenuItem>
+        <MenuItem onClick={{}}>Nguyen Van A</MenuItem>
+        <Divider />
+        <MenuItem onClick={() => router.push("/classes/Teaching")}>
+          Classes teaching
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={() => router.push("/classes/Enrolled")}>
+          Classes enrolled
+        </MenuItem>
+        <Divider />
         <MenuItem onClick={handleClose}>Logout</MenuItem>
       </Menu>
     </div>
