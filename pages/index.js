@@ -34,13 +34,24 @@ export default function Home({ classesData }) {
 }
 
 export async function getStaticProps() {
-  //fetch data teaching from api
-  const url = process.env.ROOT_URL
-    ? process.env.ROOT_URL
-    : "http://localhost:3000";
-  const response = await fetch(`${url}/api/AllClasses`);
-  const data = await response.json();
+  const url = process.env.DB_URL;
 
+  const client = await MongoClient.connect(url);
+
+  const db = client.db();
+
+  const meetupCollection = db.collection("myClasses");
+
+  const data = await meetupCollection
+    .find({
+      $or: [
+        { teacher: "Nguyen Huy Khanh" },
+        { student: { name: "Nguyen Van A" } },
+      ],
+    })
+    .toArray();
+
+  client.close();
 
   const dataFormated = data.map((item) => ({
     id: item._id.toString(),

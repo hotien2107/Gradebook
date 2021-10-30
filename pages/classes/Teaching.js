@@ -30,13 +30,19 @@ const Teaching = ({ classesData }) => {
 };
 
 export async function getStaticProps() {
-  //fetch data from api
-  const url = process.env.ROOT_URL
-    ? process.env.ROOT_URL
-    : "http://localhost:3000";
-  const response = await fetch(`${url}/api/ClassesTeaching`);
+  const url = process.env.DB_URL;
 
-  const data = await response.json();
+  const client = await MongoClient.connect(url);
+
+  const db = client.db();
+
+  const meetupCollection = db.collection("myClasses");
+
+  const data = await meetupCollection
+    .find({ teacher: "Nguyen Huy Khanh" })
+    .toArray();
+
+  client.close();
 
   const dataFormated = data.map((item) => ({
     id: item._id.toString(),
