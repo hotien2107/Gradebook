@@ -17,7 +17,7 @@ async function handle(req, res) {
 
   client.close();
 
-  res.status(200).json(data);
+  res.json(data);
 }
 
 export default handle;
