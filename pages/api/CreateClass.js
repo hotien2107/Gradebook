@@ -15,7 +15,7 @@ async function handle(req, res) {
 
     const classCollection = db.collection("myClasses");
 
-    await classCollection.insertOne(data);
+    await classCollection.insertOne(JSON.parse(data));
 
     client.close();
 
