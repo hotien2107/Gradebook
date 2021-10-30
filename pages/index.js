@@ -1,10 +1,9 @@
-import Head from "next/head";
-import Link from "next/link";
 import { ControlPoint } from "@mui/icons-material";
-import { Divider, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import { MongoClient } from "mongodb";
+import Head from "next/head";
 import { Fragment, useState } from "react";
 import Classes from "../components/class/Classes";
-import JoinClass from "../components/class/JoinClass";
 import NewClass from "../components/class/NewClass";
 
 export default function Home({ classesData }) {

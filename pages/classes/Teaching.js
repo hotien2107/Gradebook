@@ -2,6 +2,8 @@ import { ControlPoint } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import Head from "next/head";
 import React, { Fragment, useState } from "react";
+import { MongoClient } from "mongodb";
+
 import Classes from "../../components/class/Classes";
 import NewClass from "../../components/class/NewClass";
 
