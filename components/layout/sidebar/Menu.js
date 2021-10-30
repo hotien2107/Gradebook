@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import React from "react";
 
-const Menu = ({ onClose }) => {
+const Menu = () => {
   const router = useRouter();
 
   return (
