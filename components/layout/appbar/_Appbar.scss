@@ -1,0 +1,14 @@
+.appbar {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  overflow-y: auto !important;
+
+  &__avatar {
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    &:hover {
+      transform: scale(1.2) !important;
+    }
+  }
+}

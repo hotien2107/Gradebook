@@ -41,11 +41,6 @@ export async function getStaticProps() {
   const response = await fetch(`${url}/api/AllClasses`);
   const data = await response.json();
 
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
 
   const dataFormated = data.map((item) => ({
     id: item._id.toString(),
