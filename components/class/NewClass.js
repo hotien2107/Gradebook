@@ -4,13 +4,11 @@ import FormClass from "../form/FormClass";
 
 const NewClass = ({ onClose }) => {
   const router = useRouter();
-  const rootApi = process.env.ROOT_API;
-  console.log(rootApi);
   const onAddClass = async (classData) => {
     
     //fetch data from API
     try {
-      const response = await fetch(`${rootApi}/api/CreateClass`, {
+      const response = await fetch(`https://gradebook-api.vercel.app/api/CreateClass`, {
         method: "POST",
         body: JSON.stringify(classData),
         header: {

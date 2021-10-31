@@ -10,9 +10,8 @@ const JoinClass = ({ onClose }) => {
     e.preventDefault();
 
     if (enteredId.trim() !== "") {
-      const rootApi = process.env.ROOT_API;
       //fetch data from API
-      const response = await fetch(`${rootApi}/api/JoinClass`, {
+      const response = await fetch(`https://gradebook-api.vercel.appapi/JoinClass`, {
         method: "POST",
         body: enteredId,
         header: {

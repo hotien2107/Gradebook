@@ -42,7 +42,7 @@ export default function Home({ classesTeaching, classesEnrolled }) {
           onClick={() => setOpenAddClass(true)}
         />
       </div>
-      {openAddClass ? <NewClass onClose={() => setOpenAddClass(false)} /> : ""}
+      {openAddClass ? <NewClass onClose={() => setOpenAddClass(false)} /> : null}
       <Classes data={classesTeaching} />
 
       <Divider />
