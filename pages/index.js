@@ -1,19 +1,22 @@
-import { Fragment, useState } from "react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { MongoClient } from "mongodb";
 import { ControlPoint } from "@mui/icons-material";
 import { Divider, Typography } from "@mui/material";
+import Head from "next/head";
+import ErrorPage from "next/error";
+import { useRouter } from "next/router";
+import { Fragment, useState } from "react";
 
 import Classes from "../components/class/Classes";
-import NewClass from "../components/class/NewClass";
 import JoinClass from "../components/class/JoinClass";
+import NewClass from "../components/class/NewClass";
 
 export default function Home({ classesTeaching, classesEnrolled }) {
   const router = useRouter();
   const [openAddClass, setOpenAddClass] = useState(false);
   const [openJoinClass, setOpenJoinClass] = useState(false);
 
+  if (!classesTeaching || !classesEnrolled) {
+    return <ErrorPage statusCode={404}/>;
+  }
   return (
     <Fragment>
       <Head>
@@ -25,7 +28,13 @@ export default function Home({ classesTeaching, classesEnrolled }) {
       </Head>
 
       <div className="group-title">
-        <Typography variant="h5" mt={2} mb={2} className="title" onClick={() => router.push('/classes/Teaching')}>
+        <Typography
+          variant="h5"
+          mt={2}
+          mb={2}
+          className="title"
+          onClick={() => router.push("/classes/Teaching")}
+        >
           Teaching
         </Typography>
         <ControlPoint
@@ -39,7 +48,13 @@ export default function Home({ classesTeaching, classesEnrolled }) {
       <Divider />
 
       <div className="group-title">
-        <Typography variant="h5" mt={2} mb={2} className="title" onClick={() => router.push('/classes/Enrolled')}>
+        <Typography
+          variant="h5"
+          mt={2}
+          mb={2}
+          className="title"
+          onClick={() => router.push("/classes/Enrolled")}
+        >
           Enrolled
         </Typography>
         <ControlPoint
@@ -57,46 +72,48 @@ export default function Home({ classesTeaching, classesEnrolled }) {
   );
 }
 
-export async function getStaticProps() {
-  const url = process.env.DB_URL;
+export async function getStaticProps({req,res}) {
+  const rootApi = process.env.ROOT_API;
 
-  const client = await MongoClient.connect(url);
+  //fetch external api
+  try {
+    const result_teaching = await fetch(
+      `${rootApi}/api/TeachingClassesHomePage`
+    );
 
-  const db = client.db();
+    const data_teaching = await result_teaching.json();
 
-  const meetupCollection = db.collection("myClasses");
+    const result_enrolled = await fetch(
+      `${rootApi}/api/EnrolledClassesHomePage`
+    );
 
-  const data_teaching = await meetupCollection
-    .find({ teacher: "Nguyen Huy Khanh" })
-    .limit(4)
-    .toArray();
+    const data_enrolled = await result_enrolled.json();
 
-  const data_enrolled = await meetupCollection
-    .find({ students: { name: "Nguyen Van A" } })
-    .limit(4)
-    .toArray();
+    const dataTeachingFormated = data_teaching.map((item) => ({
+      id: item._id.toString(),
+      title: item.name,
+      image: item.image,
+      description: item.description,
+    }));
 
-  client.close();
+    const dataEnrolledFormated = data_enrolled.map((item) => ({
+      id: item._id.toString(),
+      title: item.name,
+      image: item.image,
+      description: item.description,
+    }));
 
-  const dataTeachingFormated = data_teaching.map((item) => ({
-    id: item._id.toString(),
-    title: item.name,
-    image: item.image,
-    description: item.description,
-  }));
-
-  const dataEnrolledFormated = data_enrolled.map((item) => ({
-    id: item._id.toString(),
-    title: item.name,
-    image: item.image,
-    description: item.description,
-  }));
-
-  return {
-    props: {
-      classesTeaching: dataTeachingFormated,
-      classesEnrolled: dataEnrolledFormated,
-    },
-    revalidate: 1,
-  };
+    return {
+      props: {
+        classesTeaching: dataTeachingFormated,
+        classesEnrolled: dataEnrolledFormated,
+      },
+      revalidate: 1,
+    };
+  } catch {
+    res.statusCode = 404;
+    return {
+      props: {},
+    };
+  }
 }

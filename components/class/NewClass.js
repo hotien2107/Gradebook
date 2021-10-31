@@ -7,9 +7,9 @@ const NewClass = ({ onClose }) => {
   const router = useRouter();
 
   const onAddClass = async (classData) => {
-    console.log('fetch data');
+    const rootApi = process.env.ROOT_API;
     //fetch data from API
-    const response = await fetch("/api/CreateClass", {
+    const response = await fetch(`${rootApi}/api/CreateClass`, {
       method: "POST",
       body: JSON.stringify(classData),
       header: {

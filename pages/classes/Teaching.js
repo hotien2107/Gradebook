@@ -1,14 +1,18 @@
 import { ControlPoint } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import Head from "next/head";
+import ErrorPage from "next/error";
 import React, { Fragment, useState } from "react";
-import { MongoClient } from "mongodb";
 
 import Classes from "../../components/class/Classes";
 import NewClass from "../../components/class/NewClass";
 
 const Teaching = ({ classesData }) => {
   const [openAddClass, setOpenAddClass] = useState(false);
+
+  if (!classesData) {
+    return <ErrorPage statusCode={404} />;
+  }
   return (
     <Fragment>
       <Head>
@@ -34,34 +38,33 @@ const Teaching = ({ classesData }) => {
   );
 };
 
-export async function getStaticProps() {
-  const url = process.env.DB_URL;
+export async function getStaticProps({ req, res }) {
+  const rootApi = process.env.ROOT_API;
+  //fetch external api
+  try {
+    const result = await fetch(`${rootApi}/api/TeachingClasses`);
 
-  const client = await MongoClient.connect(url);
+    const data = await result.json();
 
-  const db = client.db();
+    const dataFormated = data.map((item) => ({
+      id: item._id.toString(),
+      title: item.name,
+      image: item.image,
+      description: item.description,
+    }));
 
-  const meetupCollection = db.collection("myClasses");
-
-  const data = await meetupCollection
-    .find({ teacher: "Nguyen Huy Khanh" })
-    .toArray();
-
-  client.close();
-
-  const dataFormated = data.map((item) => ({
-    id: item._id.toString(),
-    title: item.name,
-    image: item.image,
-    description: item.description,
-  }));
-
-  return {
-    props: {
-      classesData: dataFormated,
-    },
-    revalidate: 1,
-  };
+    return {
+      props: {
+        classesData: dataFormated,
+      },
+      revalidate: 1,
+    };
+  } catch {
+    res.statusCode = 404;
+    return {
+      props: {},
+    };
+  }
 }
 
 export default Teaching;
