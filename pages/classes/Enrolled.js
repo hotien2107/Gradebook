@@ -1,11 +1,12 @@
 import { ControlPoint } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import Head from "next/head";
 import ErrorPage from "next/error";
+import Head from "next/head";
+import fetch from "node-fetch";
 import React, { Fragment, useState } from "react";
-
 import Classes from "../../components/class/Classes";
 import JoinClass from "../../components/class/JoinClass";
+
 
 const Enrolled = ({ classesData }) => {
   const [openJoinClass, setOpenJoinClass] = useState(false);

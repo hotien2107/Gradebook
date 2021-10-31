@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
 import { TextField, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const JoinClass = ({ onClose }) => {
   const [enteredId, setEnteredId] = useState("");

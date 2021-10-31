@@ -1,13 +1,14 @@
 import { ControlPoint } from "@mui/icons-material";
 import { Divider, Typography } from "@mui/material";
-import Head from "next/head";
 import ErrorPage from "next/error";
+import Head from "next/head";
+import fetch from "node-fetch";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
-
 import Classes from "../components/class/Classes";
 import JoinClass from "../components/class/JoinClass";
 import NewClass from "../components/class/NewClass";
+
 
 export default function Home({ classesTeaching, classesEnrolled }) {
   const router = useRouter();

@@ -1,7 +1,7 @@
-import React from "react";
 import { useRouter } from "next/router";
-
+import React from "react";
 import FormClass from "../form/FormClass";
+
 
 const NewClass = ({ onClose }) => {
   const router = useRouter();
