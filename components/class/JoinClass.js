@@ -1,7 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import fetch from "node-fetch";
 
 const JoinClass = ({ onClose }) => {
   const [enteredId, setEnteredId] = useState("");
@@ -13,7 +12,7 @@ const JoinClass = ({ onClose }) => {
     if (enteredId.trim() !== "") {
       const rootApi = process.env.ROOT_API;
       //fetch data from API
-      const response = await fetch(`${rootApi}/api/JoinClass`, {
+      const response = await fetch(`/api/JoinClass`, {
         method: "POST",
         body: enteredId,
         header: {
@@ -22,7 +21,7 @@ const JoinClass = ({ onClose }) => {
       });
       await response.json();
 
-      setEnteredId('');
+      setEnteredId("");
       router.push("/classes/Enrolled");
       onClose();
     }
