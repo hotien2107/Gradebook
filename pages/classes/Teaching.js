@@ -61,7 +61,7 @@ export async function getStaticProps({ req, res }) {
       revalidate: 1,
     };
   } catch {
-    res.statusCode = 404;
+    console.log(error);
     return {
       props: {},
     };

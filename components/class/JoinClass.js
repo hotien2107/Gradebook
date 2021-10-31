@@ -1,6 +1,7 @@
 import { TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import fetch from "node-fetch";
 
 const JoinClass = ({ onClose }) => {
   const [enteredId, setEnteredId] = useState("");

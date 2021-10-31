@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
+import fetch from "node-fetch";
 import FormClass from "../form/FormClass";
 
 
