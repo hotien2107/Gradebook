@@ -1,21 +1,14 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { auth } from '../../config/firebase';
-
-const GoogleProvider = new GoogleAuthProvider();
+import useFirebaseAuth from '../../hooks/use-auth';
 
 const Login = () => {
   const router = useRouter();
-  const signInWithGoogle = async () => {
-    try {
-      const loginRes = await signInWithPopup(auth, GoogleProvider);
+  const auth = useFirebaseAuth();
 
-      if (loginRes.user) {
-        router.push('/');
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+  const signInWithGoogle = () => {
+    auth.loginGoogle(() => router.push('/'));
   };
 
   return (
@@ -81,7 +74,7 @@ const Login = () => {
                 </button>
 
                 <button
-                  onClick={signInWithGoogle}
+                  onClick={() => signInWithGoogle()}
                   className='bg-red-500 border-none px-4 py-2 rounded-xl cursor-pointer text-white shadow-xl hover:shadow-inner transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105'
                 >
                   Google

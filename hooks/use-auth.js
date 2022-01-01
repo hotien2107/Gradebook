@@ -1,18 +1,29 @@
+import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth';
+import { addDoc, collection, getDocs, onSnapshot, query, where } from '@firebase/firestore';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import { auth } from '../config/firebase';
+import { useEffect, useState } from 'react';
+import { auth, db } from '../config/firebase';
 
-const formatAuthUser = (user) => ({
-  uid: user.uid,
-  email: user.email,
-  displayName: user.displayName,
-  photoURL: user.photoURL,
-});
+const GoogleProvider = new GoogleAuthProvider();
 
 export default function useFirebaseAuth() {
   const [authUser, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      querySnapshot.forEach((doc) => {
+        setUsers((listUsers) => {
+          listUsers.push(doc.data());
+          return listUsers;
+        });
+      });
+    };
+    getAllUsers();
+  }, []);
 
   const authStateChanged = (authState) => {
     if (!authState) {
@@ -20,15 +31,49 @@ export default function useFirebaseAuth() {
       setLoading(false);
       return;
     }
-
     setLoading(true);
-    const formattedUser = formatAuthUser(authState);
-    setAuthUser(formattedUser);
+
+    const userRef = collection(db, 'users');
+    const q = query(userRef, where("uid", "==", authState.uid));
+
+    onSnapshot(q, (querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      setAuthUser(data[0]);
+    });
+
     setLoading(false);
+  };
+
+  const loginGoogle = async (loginSuccess) => {
+    try {
+      const loginRes = await signInWithPopup(auth, GoogleProvider);
+
+      if (!loginRes.user) {
+        return;
+      }
+
+      if (users.findIndex((userId) => userId.uid === loginRes.user.uid) < 0) {
+        await addDoc(collection(db, 'users'), {
+          uid: loginRes.user.uid,
+          displayName: loginRes.user.displayName,
+          photoURL: loginRes.user.photoURL,
+          role: 1,
+        });
+      }
+
+      loginSuccess();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const logout = async () => {
     try {
+      router.push('/login');
       await auth.signOut();
     } catch (error) {
       console.log(error.message);
@@ -44,6 +89,7 @@ export default function useFirebaseAuth() {
   return {
     authUser,
     loading,
+    loginGoogle,
     logout,
   };
 }

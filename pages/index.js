@@ -1,16 +1,8 @@
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import ChatBox from '../components/chat';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
-import useFirebaseAuth from '../hooks/use-auth';
 
 export default function Home() {
-  const auth = useFirebaseAuth();
-  const router = useRouter();
-
-  const { authUser, logout } = auth;
-  
   return (
     <div>
       <Head>
@@ -21,16 +13,7 @@ export default function Home() {
 
       <main>
         <Header />
-        <div className='h-screen'>
-          {authUser ? (
-            <>
-              <button onClick={logout}>Logout</button>
-              <ChatBox />
-            </>
-          ) : (
-            <button onClick={() => router.push('/login')}>Login</button>
-          )}
-        </div>
+
         <Footer />
       </main>
     </div>
