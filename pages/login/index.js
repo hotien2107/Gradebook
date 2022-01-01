@@ -1,6 +1,16 @@
-import React from 'react';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useRouter } from 'next/router';
+import { auth } from '../../config/firebase';
+import useFirebaseAuth from '../../hooks/use-auth';
 
 const Login = () => {
+  const router = useRouter();
+  const auth = useFirebaseAuth();
+
+  const signInWithGoogle = () => {
+    auth.loginGoogle(() => router.push('/'));
+  };
+
   return (
     <div className='font-sans'>
       <div className='relative min-h-screen flex flex-col sm:justify-center items-center bg-gray-100 '>
@@ -63,7 +73,10 @@ const Login = () => {
                   Facebook
                 </button>
 
-                <button className='bg-red-500 border-none px-4 py-2 rounded-xl cursor-pointer text-white shadow-xl hover:shadow-inner transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105'>
+                <button
+                  onClick={() => signInWithGoogle()}
+                  className='bg-red-500 border-none px-4 py-2 rounded-xl cursor-pointer text-white shadow-xl hover:shadow-inner transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105'
+                >
                   Google
                 </button>
               </div>
