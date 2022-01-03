@@ -1,7 +1,27 @@
 //rafce
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import useFirebaseAuth from '../../hooks/use-auth';
 
 const register = () => {
+  const [emailEntered, setEmailEntered] = useState('');
+  const [passwordEntered, setPasswordEntered] = useState('');
+  const [firstNameEntered, setFirstNameEntered] = useState('');
+  const [lastNameEntered, setLastNameEntered] = useState('');
+
+  const router = useRouter();
+
+  const { signUp } = useFirebaseAuth();
+
+  const signUpWithEmailAndPassword = () => {
+    const signUpSuccess = () => {
+      console.log('success');
+      router.push('/login');
+    };
+
+    signUp(signUpSuccess, emailEntered, passwordEntered, firstNameEntered + lastNameEntered);
+  };
+
   return (
     <div className='flex items-center justify-center min-h-screen px-5 py-5 bg-gray-900 min-w-screen'>
       <div className='w-full overflow-hidden text-gray-500 bg-gray-100 shadow-xl rounded-3xl' style={{ maxWidth: 1000 + 'px' }}>
@@ -168,6 +188,8 @@ const register = () => {
                       type='text'
                       className='w-full py-2 pl-10 pr-3 -ml-10 border-2 border-gray-200 rounded-lg outline-none focus:border-indigo-500'
                       placeholder='John'
+                      value={firstNameEntered}
+                      onChange={(e) => setFirstNameEntered(e.target.value)}
                     />
                   </div>
                 </div>
@@ -181,6 +203,8 @@ const register = () => {
                       type='text'
                       className='w-full py-2 pl-10 pr-3 -ml-10 border-2 border-gray-200 rounded-lg outline-none focus:border-indigo-500'
                       placeholder='Smith'
+                      value={lastNameEntered}
+                      onChange={(e) => setLastNameEntered(e.target.value)}
                     />
                   </div>
                 </div>
@@ -196,6 +220,8 @@ const register = () => {
                       type='email'
                       className='w-full py-2 pl-10 pr-3 -ml-10 border-2 border-gray-200 rounded-lg outline-none focus:border-indigo-500'
                       placeholder='johnsmith@example.com'
+                      value={emailEntered}
+                      onChange={(e) => setEmailEntered(e.target.value)}
                     />
                   </div>
                 </div>
@@ -211,13 +237,18 @@ const register = () => {
                       type='password'
                       className='w-full py-2 pl-10 pr-3 -ml-10 border-2 border-gray-200 rounded-lg outline-none focus:border-indigo-500'
                       placeholder='************'
+                      value={passwordEntered}
+                      onChange={(e) => setPasswordEntered(e.target.value)}
                     />
                   </div>
                 </div>
               </div>
               <div className='flex -mx-3'>
                 <div className='w-full px-3 mb-5'>
-                  <button className='block w-full max-w-xs px-3 py-3 mx-auto font-semibold text-white bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:bg-indigo-700'>
+                  <button
+                    onClick={signUpWithEmailAndPassword}
+                    className='block w-full max-w-xs px-3 py-3 mx-auto font-semibold text-white bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:bg-indigo-700'
+                  >
                     REGISTER NOW
                   </button>
                 </div>

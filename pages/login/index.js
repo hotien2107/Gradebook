@@ -5,7 +5,7 @@ import useFirebaseAuth from '../../hooks/use-auth';
 
 const Login = () => {
   const router = useRouter();
-  const auth = useFirebaseAuth();
+  const {auth} = useFirebaseAuth();
 
   const signInWithGoogle = () => {
     auth.loginGoogle(() => router.push('/'));

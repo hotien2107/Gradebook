@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from '@firebase/auth';
 import { addDoc, collection, getDocs, onSnapshot, query, where } from '@firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -34,7 +34,7 @@ export default function useFirebaseAuth() {
     setLoading(true);
 
     const userRef = collection(db, 'users');
-    const q = query(userRef, where("uid", "==", authState.uid));
+    const q = query(userRef, where('uid', '==', authState.uid));
 
     onSnapshot(q, (querySnapshot) => {
       const data = querySnapshot.docs.map((doc) => ({
@@ -71,6 +71,30 @@ export default function useFirebaseAuth() {
     }
   };
 
+  // sign up with email and password
+  const signUpWithEmailAndPassword = async (signUpSuccess, email, password, fullName) => {
+    try {
+      const signUpRef = await createUserWithEmailAndPassword(auth, email, password);
+
+      if (!signUpRef.user) {
+        return;
+      }
+
+      if (users.findIndex((userId) => userId.uid === signUpRef.user.uid) < 0) {
+        await addDoc(collection(db, 'users'), {
+          uid: signUpRef.user.uid,
+          displayName: fullName,
+          photoURL: signUpRef.user.photoURL,
+          role: 1,
+        });
+      }
+
+      signUpSuccess();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const logout = async () => {
     try {
       router.push('/login');
@@ -90,6 +114,7 @@ export default function useFirebaseAuth() {
     authUser,
     loading,
     loginGoogle,
+    signUp: signUpWithEmailAndPassword,
     logout,
   };
 }
